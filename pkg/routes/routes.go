@@ -2,6 +2,7 @@ package routes
 
 import (
 	"resultanalyser/pkg/controller"
+	"resultanalyser/pkg/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,7 +22,7 @@ func RegisterRoutes(router *gin.Engine) {
   subjectRoute.DELETE("/delete/:id", controller.DeleteSubjectController)
 
   tutorRoute := router.Group("/tutor")
-  tutorRoute.GET("/", controller.ListAllTutors)
+  tutorRoute.GET("/", middleware.ReqAuth, controller.ListAllTutors)
   tutorRoute.POST("/create", controller.CreateTutorController)
 
 }

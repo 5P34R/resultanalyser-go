@@ -3,8 +3,10 @@ package controller
 import (
 	"net/http"
 	"resultanalyser/pkg/model"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -78,8 +80,29 @@ func Login(c *gin.Context) {
     return
   }
 
+  // Create a new token object, specifying signing method and the claims
+// you would like it to contain.
+  token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+	  "sub": user.ID,
+	  "exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
+  })
+
+  // Sign and get the complete encoded token as a string using the secret
+  tokenString, err := token.SignedString([]byte("supersecret"))
+
+  if err != nil {
+    c.JSON(http.StatusUnauthorized, gin.H{
+      "error":err.Error(),
+    })
+    return
+  }
+
+  c.SetSameSite(http.SameSiteLaxMode)
+  c.SetCookie("Authorization", tokenString, 3600 * 24 * 30, "", "", false, true)
+
   c.JSON(http.StatusOK, gin.H{
-    "message": user,
+    "token": tokenString,
   })
   
 }
+

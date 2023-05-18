@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"resultanalyser/pkg/model"
 
@@ -23,7 +24,8 @@ type TutorList struct {
 
 func ListAllTutors(c *gin.Context){
   var tutors []model.Tutor
-
+  user, _ := c.Get("user")
+  fmt.Println(user)
     tutors = model.ListTutors()
 
   var response []gin.H 
