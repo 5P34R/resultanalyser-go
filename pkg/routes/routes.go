@@ -23,7 +23,7 @@ func RegisterRoutes(router *gin.Engine) {
 
   tutorRoute := router.Group("/tutor")
   tutorRoute.GET("/", middleware.ReqAuth, controller.ListAllTutors)
-  tutorRoute.POST("/create", controller.CreateTutorController)
+  tutorRoute.POST("/create", middleware.ReqAuth, controller.CreateTutorController)
 
 }
 

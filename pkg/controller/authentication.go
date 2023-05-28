@@ -16,6 +16,13 @@ func SignUp(c *gin.Context) {
 		Password string `json:"password"`
 	}
 
+  type ResponseBody struct {
+    ID uint `json:"id"`
+    Email string `json:"email"`
+    CreatedAt time.Time `json:"CreatedAt"`
+    UpdatedAt time.Time `json:"UpdatedAt"`
+  }
+
 	var reqBody requestBody
 	err := c.BindJSON(&reqBody)
 	if err != nil {
@@ -42,8 +49,14 @@ func SignUp(c *gin.Context) {
     })
     return 
   }
+  respones := ResponseBody{
+    ID: user.ID,
+    Email: user.Email,
+    CreatedAt: user.CreatedAt,
+    UpdatedAt: user.UpdatedAt,
+  }
 	c.JSON(http.StatusAccepted, gin.H{
-		"user": user,
+		"user": respones,
 	})
 }
 

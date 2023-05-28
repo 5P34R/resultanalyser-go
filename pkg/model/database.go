@@ -36,5 +36,4 @@ func init() {
 	// db.Create(&Subject{ Name: "Computer Networks", Code: "CST301", Semester: "S6" })
 }
 
-//  Tutor
 
